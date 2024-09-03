@@ -14,12 +14,14 @@ function HomePage() {
     const [fileArrLen, setFileArrLen] = useState(0);
 
 
+
+
     return (
         <div className='w-full h-screen'>
-            <div className='w-full lg:h-[calc(100%-180px)] h-[calc(100%-260px)]'>
+            <div className='w-full lg:h-[calc(100%-180px)] h-[calc(100%-260px)] overflow-y-auto '>
                 <FileList setMusicData={setMusicData} musicData={musicData} currentMusicId={currentMusicId} setFileArrLen={setFileArrLen} />
             </div>
-            <div className='w-full h-[260px] lg:h-[180px] border-t border-gray-600'>
+            <div className='w-full h-[260px] lg:h-[180px] border-t border-gray-600 bg-black z-20'>
                 <Player musicData={musicData} setCurrentMusicId={setCurrentMusicId} fileArrLen={fileArrLen} />
             </div>
 

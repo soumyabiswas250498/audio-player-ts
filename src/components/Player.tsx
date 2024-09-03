@@ -86,7 +86,7 @@ const Player: React.FC<PlayerProps> = ({ musicData, setCurrentMusicId, fileArrLe
 
         // Handle song completion
 
-        if (Math.floor(currentTime) === Math.floor(duration)) {
+        if (Math.floor(currentTime) === Math.floor(duration) && Math.floor(duration) !== 0) {
             setCurrentMusicId((prev) => fileArrLen - 1 > prev ? prev + 1 : 0)
         }
     }, [currentTime, duration])
@@ -100,9 +100,14 @@ const Player: React.FC<PlayerProps> = ({ musicData, setCurrentMusicId, fileArrLe
     };
 
     const handlePlayButton = () => {
-        if (musicData.audioSrc) {
-            setIsPlaying((prev) => !prev);
+        if (fileArrLen) {
+            if (musicData.audioSrc) {
+                setIsPlaying((prev) => !prev);
+            } else {
+                setCurrentMusicId(0)
+            }
         }
+
 
     };
 
@@ -163,13 +168,13 @@ const Player: React.FC<PlayerProps> = ({ musicData, setCurrentMusicId, fileArrLe
 
                 <div className="flex items-center justify-center w-full">
                     <div className="flex justify-between items-center w-[250px]">
-                        <div className="flex items-center justify-center w-12 h-12 rounded-full bg-[#20a9ae] hover:bg-[#288487] transition duration-150 cursor-pointer" onClick={handleBackward}>
+                        <div className="flex items-center justify-center w-12 h-12 rounded-full bg-[#20a9ae] hover:bg-[#288487] transition duration-150 cursor-pointer" onClick={() => handleBackward()}>
                             <MdSkipPrevious className='text-2xl' />
                         </div>
-                        <div className="flex items-center justify-center w-16 h-16 rounded-full bg-[#20a9ae] hover:bg-[#288487] transition duration-150 cursor-pointer" onClick={handlePlayButton}>
+                        <div className="flex items-center justify-center w-16 h-16 rounded-full bg-[#20a9ae] hover:bg-[#288487] transition duration-150 cursor-pointer" onClick={() => handlePlayButton()} >
                             {isPlaying ? <FaPause /> : <FaPlay />}
                         </div>
-                        <div className="flex items-center justify-center w-12 h-12 rounded-full bg-[#20a9ae] hover:bg-[#288487] transition duration-150 cursor-pointer" onClick={handleForward}>
+                        <div className="flex items-center justify-center w-12 h-12 rounded-full bg-[#20a9ae] hover:bg-[#288487] transition duration-150 cursor-pointer" onClick={() => handleForward()}>
                             <MdSkipNext className='text-2xl' />
                         </div>
                     </div>
