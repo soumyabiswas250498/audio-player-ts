@@ -22,6 +22,11 @@ export interface ListProps {
     setMusicData: React.Dispatch<React.SetStateAction<MusicData>>;
 }
 
+export interface ListCardProps {
+    file: FileData;
+    setMusicData: React.Dispatch<React.SetStateAction<MusicData>>;
+}
+
 export interface GridProps {
     fileArr: FileData[];
     setMusicData: React.Dispatch<React.SetStateAction<MusicData>>;

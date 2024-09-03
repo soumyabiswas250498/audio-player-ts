@@ -59,11 +59,15 @@ const Player: React.FC<PlayerProps> = ({ musicData }) => {
         if (audioRef.current) {
             if (isPlaying) {
                 audioRef.current.pause();
+                audioRef.current.load();
                 audioRef.current.play();
+
                 setIsPlaying(true);
+            } else {
+                audioRef.current.load();
             }
 
-            audioRef.current.load();
+
 
         }
     }, [musicData.audioSrc]);
