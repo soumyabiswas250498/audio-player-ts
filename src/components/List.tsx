@@ -6,13 +6,16 @@ import { ListProps, ListCardProps } from '../Types';
 function ListCard(props: ListCardProps) {
     const { file, setMusicData, _id, isActive } = props;
 
+
+    console.log(isActive, '***a')
+
     const imgUrl = useMemo(() => {
         return file.thumbnailFile ? URL.createObjectURL(file.thumbnailFile) : '/music_img.jpg'
     }, [file.thumbnailFile])
 
     return (
         <li
-            className={`flex items-center w-full p-1 transition duration-200 border border-gray-600 rounded-lg cursor-pointer bg-gray-800/10 hover:bg-gray-800 ${isActive && 'border-[#3dd4d9]'}`}
+            className={`flex items-center w-full p-1 transition duration-200 border ${isActive ? 'border-[#3dd4d9]' : 'border-gray-600'} rounded-lg cursor-pointer bg-gray-800/10 hover:bg-gray-800 `}
             onClick={() => {
                 setMusicData({
                     imgSrc: file.thumbnailFile ? URL.createObjectURL(file.thumbnailFile) : '/music_img.jpg',

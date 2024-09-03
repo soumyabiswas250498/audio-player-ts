@@ -13,7 +13,7 @@ function GridCard(props: ListCardProps) {
 
     return (
         <div
-            className={`p-2 transition duration-200 border border-gray-600 rounded-lg cursor-pointer bg-gray-800/10 hover:bg-gray-800 ${isActive && 'border-[#3dd4d9]'}`}
+            className={`p-2 transition duration-200 border ${isActive ? 'border-[#3dd4d9]' : 'border-gray-600'} rounded-lg cursor-pointer bg-gray-800/10 hover:bg-gray-800`}
             onClick={() => {
                 setMusicData({
                     imgSrc: file.thumbnailFile ? URL.createObjectURL(file.thumbnailFile) : '/music_img.jpg',
