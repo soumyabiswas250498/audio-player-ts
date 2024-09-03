@@ -6,9 +6,6 @@ import { ListProps, ListCardProps } from '../Types';
 function ListCard(props: ListCardProps) {
     const { file, setMusicData, _id, isActive } = props;
 
-
-    console.log(isActive, '***a')
-
     const imgUrl = useMemo(() => {
         return file.thumbnailFile ? URL.createObjectURL(file.thumbnailFile) : '/music_img.jpg'
     }, [file.thumbnailFile])

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { IoCloudUploadOutline, IoGrid } from "react-icons/io5";
 import { FaList } from "react-icons/fa";
 import { createPortal } from 'react-dom';
@@ -9,10 +9,29 @@ import { FileData, SetMusicDataProps } from '../Types';
 
 
 
-const FileList: React.FC<SetMusicDataProps> = ({ setMusicData, musicData }) => {
+const FileList: React.FC<SetMusicDataProps> = ({ setMusicData, musicData, currentMusicId, setFileArrLen }) => {
     const [fileArr, setFileArr] = useState<FileData[]>([]);
     const [showForm, setShowForm] = useState(false);
     const [type, setType] = useState<'list' | 'grid'>('list');
+
+    useEffect(() => {
+        if (currentMusicId > -1 && currentMusicId < fileArr.length && fileArr.length > 0) {
+            const temp = fileArr[currentMusicId]
+            setMusicData({
+                imgSrc: temp.thumbnailFile ? URL.createObjectURL(temp.thumbnailFile) : '/music_img.jpg',
+                audioSrc: URL.createObjectURL(temp.audioFile),
+                fileName: temp.audioFile.name,
+                title: temp.songTitle,
+                _id: currentMusicId
+            })
+        }
+    }, [currentMusicId])
+
+    useEffect(() => {
+        if (fileArr.length) {
+            setFileArrLen(fileArr.length);
+        }
+    }, [fileArr.length])
 
     return (
         <div className='w-full p-2'>

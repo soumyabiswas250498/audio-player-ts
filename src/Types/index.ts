@@ -18,6 +18,8 @@ export interface FileData {
 export interface SetMusicDataProps {
     setMusicData: React.Dispatch<React.SetStateAction<MusicData>>;
     musicData: MusicData;
+    setFileArrLen: React.Dispatch<React.SetStateAction<number>>;
+    currentMusicId: number;
 }
 
 export interface ListProps {
@@ -46,4 +48,7 @@ export interface ModalContentProps {
 
 export interface PlayerProps {
     musicData: MusicData;
+    setCurrentMusicId: React.Dispatch<React.SetStateAction<number>>;
+    fileArrLen: number;
 }
+

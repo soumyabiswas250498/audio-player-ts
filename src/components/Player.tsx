@@ -1,11 +1,12 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { FaPlay, FaPause, FaForward, FaBackward } from "react-icons/fa";
+import { FaPlay, FaPause } from "react-icons/fa";
+import { MdSkipPrevious, MdSkipNext } from "react-icons/md";
 import Image from 'next/image';
 import { PlayerProps } from '../Types';
 import { formatTime } from '../Utils/formatTime';
 
 
-const Player: React.FC<PlayerProps> = ({ musicData }) => {
+const Player: React.FC<PlayerProps> = ({ musicData, setCurrentMusicId, fileArrLen }) => {
     const audioRef = useRef<HTMLAudioElement | null>(null);
     const [currentTime, setCurrentTime] = useState<number>(0);
     const [duration, setDuration] = useState<number>(0);
@@ -14,6 +15,8 @@ const Player: React.FC<PlayerProps> = ({ musicData }) => {
     useEffect(() => {
 
         // Handle audio file change
+
+        setCurrentMusicId(musicData._id)
 
         const handleLoadedMetadata = () => {
             if (audioRef.current) {
@@ -71,16 +74,11 @@ const Player: React.FC<PlayerProps> = ({ musicData }) => {
 
         //Handle Song Change
 
-        if (audioRef.current) {
-            if (isPlaying) {
-                audioRef.current.pause();
-                audioRef.current.load();
-                audioRef.current.play();
-
-                setIsPlaying(true);
-            } else {
-                audioRef.current.load();
-            }
+        if (audioRef.current && musicData.audioSrc) {
+            audioRef.current.pause();
+            audioRef.current.load();
+            audioRef.current.play();
+            setIsPlaying(true);
         }
     }, [musicData.audioSrc]);
 
@@ -89,7 +87,7 @@ const Player: React.FC<PlayerProps> = ({ musicData }) => {
         // Handle song completion
 
         if (Math.floor(currentTime) === Math.floor(duration)) {
-            setIsPlaying(false)
+            setCurrentMusicId((prev) => fileArrLen - 1 > prev ? prev + 1 : 0)
         }
     }, [currentTime, duration])
 
@@ -102,19 +100,18 @@ const Player: React.FC<PlayerProps> = ({ musicData }) => {
     };
 
     const handlePlayButton = () => {
-        setIsPlaying((prev) => !prev);
+        if (musicData.audioSrc) {
+            setIsPlaying((prev) => !prev);
+        }
+
     };
 
     const handleForward = () => {
-        if (audioRef.current) {
-            audioRef.current.currentTime += 20;
-        }
+        setCurrentMusicId((prev) => fileArrLen - 1 > prev ? prev + 1 : 0)
     };
 
     const handleBackward = () => {
-        if (audioRef.current) {
-            audioRef.current.currentTime -= 20;
-        }
+        setCurrentMusicId((prev) => prev > 0 ? prev - 1 : 0)
     };
 
     return (
@@ -167,13 +164,13 @@ const Player: React.FC<PlayerProps> = ({ musicData }) => {
                 <div className="flex items-center justify-center w-full">
                     <div className="flex justify-between items-center w-[250px]">
                         <div className="flex items-center justify-center w-12 h-12 rounded-full bg-[#20a9ae] hover:bg-[#288487] transition duration-150 cursor-pointer" onClick={handleBackward}>
-                            <FaBackward />
+                            <MdSkipPrevious className='text-2xl' />
                         </div>
                         <div className="flex items-center justify-center w-16 h-16 rounded-full bg-[#20a9ae] hover:bg-[#288487] transition duration-150 cursor-pointer" onClick={handlePlayButton}>
                             {isPlaying ? <FaPause /> : <FaPlay />}
                         </div>
                         <div className="flex items-center justify-center w-12 h-12 rounded-full bg-[#20a9ae] hover:bg-[#288487] transition duration-150 cursor-pointer" onClick={handleForward}>
-                            <FaForward />
+                            <MdSkipNext className='text-2xl' />
                         </div>
                     </div>
                 </div>
