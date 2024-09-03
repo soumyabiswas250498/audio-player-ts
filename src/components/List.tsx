@@ -15,7 +15,7 @@ function ListCard(props: ListCardProps) {
             className="flex items-center w-full p-1 transition duration-200 border border-gray-600 rounded-lg cursor-pointer bg-gray-800/10 hover:bg-gray-800"
             onClick={() => {
                 setMusicData({
-                    imgSrc: imgUrl,
+                    imgSrc: file.thumbnailFile ? URL.createObjectURL(file.thumbnailFile) : '/music_img.jpg',
                     audioSrc: URL.createObjectURL(file.audioFile),
                     title: file.songTitle,
                     fileName: file.audioFile.name,
@@ -24,7 +24,7 @@ function ListCard(props: ListCardProps) {
         >
             <div className='w-1/3 h-24 md:w-32'>
                 <Image
-                    src={file.thumbnailFile ? URL.createObjectURL(file.thumbnailFile) : '/music_img.jpg'}
+                    src={imgUrl}
                     alt={`${file.songTitle} thumbnail`}
                     width={200}
                     height={200}

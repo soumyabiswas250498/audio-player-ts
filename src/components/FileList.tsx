@@ -17,7 +17,7 @@ const FileList: React.FC<SetMusicDataProps> = ({ setMusicData }) => {
     return (
         <div className='w-full p-2'>
             <div className='flex items-center justify-between w-full'>
-                <button className='flex items-center justify-center gap-1 cursor-pointer' onClick={() => setShowForm(true)}>
+                <button className='flex items-center justify-center gap-1 cursor-pointer border border-[#20a9ae] rounded-md text-[#8ceaee] hover:bg-[#20a9ae] hover:text-gray-200 transition duration-200 p-1' onClick={() => setShowForm(true)}>
                     Upload <IoCloudUploadOutline className='text-xl' />
                 </button>
 

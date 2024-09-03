@@ -1,35 +1,28 @@
 import { IoMdCloseCircleOutline } from "react-icons/io";
-import { useState, ChangeEvent, FormEvent } from "react";
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
 import { ModalContentProps } from "../Types";
+import { uploadValidationSchema } from "../Schemas/uploadSchema";
 
 
 const ModalContent: React.FC<ModalContentProps> = ({ onClose, setFileArr }) => {
-    const [songTitle, setSongTitle] = useState<string>("");
-    const [audioFile, setAudioFile] = useState<File | null>(null);
-    const [thumbnailFile, setThumbnailFile] = useState<File | null>(null);
-
-    const handleFormSubmit = (e: FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        if (songTitle && audioFile && thumbnailFile) {
-            setFileArr((prev) => [
-                ...prev,
-                { songTitle, audioFile, thumbnailFile },
-            ]);
-            onClose();
-        }
-    };
-
-    const handleAudioChange = (e: ChangeEvent<HTMLInputElement>) => {
-        if (e.target.files && e.target.files[0]) {
-            setAudioFile(e.target.files[0]);
-        }
-    };
-
-    const handleThumbnailChange = (e: ChangeEvent<HTMLInputElement>) => {
-        if (e.target.files && e.target.files[0]) {
-            setThumbnailFile(e.target.files[0]);
-        }
-    };
+    const formik = useFormik({
+        initialValues: {
+            songTitle: '',
+            audioFile: null,
+            thumbnailFile: null,
+        },
+        validationSchema: uploadValidationSchema,
+        onSubmit: (values) => {
+            if (values.audioFile) {
+                setFileArr(prev => [
+                    ...prev,
+                    { songTitle: values.songTitle, audioFile: values.audioFile as unknown as File, thumbnailFile: values.thumbnailFile }
+                ]);
+                onClose();
+            }
+        },
+    });
 
     return (
         <div className="absolute top-0 left-0 w-full h-screen backdrop-blur-sm bg-white/10">
@@ -41,31 +34,44 @@ const ModalContent: React.FC<ModalContentProps> = ({ onClose, setFileArr }) => {
                         </button>
                     </div>
                     <div className="mt-4">
-                        <form onSubmit={handleFormSubmit} className="flex flex-col items-center gap-4 mt-6">
+                        <form onSubmit={formik.handleSubmit} className="flex flex-col items-center gap-1 mt-6">
+                            <h1 className="text-2xl">Upload Music</h1>
                             <div className="w-full">
+                                <p>Music Title</p>
                                 <input
                                     type="text"
-                                    value={songTitle}
-                                    onChange={(e) => setSongTitle(e.target.value)}
-                                    className="w-full p-2 text-gray-800 border border-gray-300 rounded-md"
+                                    name="songTitle"
+                                    value={formik.values.songTitle}
+                                    onChange={formik.handleChange}
+                                    onBlur={formik.handleBlur}
+                                    className={`w-full p-2 text-gray-800 border border-gray-300 rounded-md ${(formik.errors.songTitle && formik.touched.songTitle) ? 'border-red-500' : ''}`}
                                     placeholder="Enter song title"
                                 />
+                                {(formik.errors.songTitle && formik.touched.songTitle) ? <div className="text-red-400 h-4">{formik.errors.songTitle}</div> : <div className="h-4">&nbsp;</div>}
                             </div>
                             <div className="w-full">
+                                <p>Select Music File</p>
                                 <input
                                     type="file"
+                                    name="audioFile"
                                     accept=".mp3"
-                                    onChange={handleAudioChange}
-                                    className="w-full p-2 border border-gray-300 rounded-md"
+                                    onChange={(e) => formik.setFieldValue('audioFile', e.currentTarget.files ? e.currentTarget.files[0] : null)}
+                                    onBlur={formik.handleBlur}
+                                    className={`w-full p-2 border border-gray-300 rounded-md ${(formik.errors.audioFile && formik.touched.audioFile) ? 'border-red-500' : ''}`}
                                 />
+                                {(formik.errors.audioFile && formik.touched.audioFile) ? <div className="text-red-400 h-4">{formik.errors.audioFile}</div> : <div className="h-4">&nbsp;</div>}
                             </div>
                             <div className="w-full">
+                                <p>Select Cover Image</p>
                                 <input
                                     type="file"
+                                    name="thumbnailFile"
                                     accept=".jpg,.jpeg,.png"
-                                    onChange={handleThumbnailChange}
-                                    className="w-full p-2 border border-gray-300 rounded-md"
+                                    onChange={(e) => formik.setFieldValue('thumbnailFile', e.currentTarget.files ? e.currentTarget.files[0] : null)}
+                                    onBlur={formik.handleBlur}
+                                    className={`w-full p-2 border border-gray-300 rounded-md ${(formik.errors.thumbnailFile && formik.touched.thumbnailFile) ? 'border-red-500' : ''}`}
                                 />
+                                {(formik.errors.thumbnailFile && formik.touched.thumbnailFile) ? <div className="text-red-400 h-4">{formik.errors.thumbnailFile}</div> : <div className="h-4">&nbsp;</div>}
                             </div>
                             <button
                                 type="submit"
