@@ -9,7 +9,7 @@ import { FileData, SetMusicDataProps } from '../Types';
 
 
 
-const FileList: React.FC<SetMusicDataProps> = ({ setMusicData }) => {
+const FileList: React.FC<SetMusicDataProps> = ({ setMusicData, musicData }) => {
     const [fileArr, setFileArr] = useState<FileData[]>([]);
     const [showForm, setShowForm] = useState(false);
     const [type, setType] = useState<'list' | 'grid'>('list');
@@ -27,10 +27,10 @@ const FileList: React.FC<SetMusicDataProps> = ({ setMusicData }) => {
                 </div>
             </div>
             {
-                type === 'list' && <List fileArr={fileArr} setMusicData={setMusicData} />
+                type === 'list' && <List fileArr={fileArr} setMusicData={setMusicData} musicData={musicData} />
             }
             {
-                type === 'grid' && <Grid fileArr={fileArr} setMusicData={setMusicData} />
+                type === 'grid' && <Grid fileArr={fileArr} setMusicData={setMusicData} musicData={musicData} />
             }
 
             {showForm && createPortal(

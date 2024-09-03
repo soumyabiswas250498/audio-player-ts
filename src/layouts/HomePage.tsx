@@ -7,13 +7,14 @@ function HomePage() {
         "imgSrc": "/music_img.jpg",
         "audioSrc": "/audio/sample.mp3",
         "title": "Samle Music",
-        'fileName': 'sample.mp3'
+        'fileName': 'sample.mp3',
+        '_id': -1
     });
 
     return (
         <div className='w-full h-screen'>
             <div className='w-full lg:h-[calc(100%-180px)] h-[calc(100%-260px)]'>
-                <FileList setMusicData={setMusicData} />
+                <FileList setMusicData={setMusicData} musicData={musicData} />
             </div>
             <div className='w-full h-[260px] lg:h-[180px] border-t border-gray-600'>
                 <Player musicData={musicData} />

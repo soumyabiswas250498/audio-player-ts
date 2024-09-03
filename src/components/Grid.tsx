@@ -5,7 +5,7 @@ import { GridProps, ListCardProps } from '../Types';
 
 
 function GridCard(props: ListCardProps) {
-    const { setMusicData, file } = props;
+    const { setMusicData, file, _id, isActive } = props;
 
     const imgUrl = useMemo(() => {
         return file.thumbnailFile ? URL.createObjectURL(file.thumbnailFile) : '/music_img.jpg'
@@ -13,14 +13,14 @@ function GridCard(props: ListCardProps) {
 
     return (
         <div
-
-            className="p-2 transition duration-200 border border-gray-600 rounded-lg cursor-pointer bg-gray-800/10 hover:bg-gray-800"
+            className={`p-2 transition duration-200 border border-gray-600 rounded-lg cursor-pointer bg-gray-800/10 hover:bg-gray-800 ${isActive && 'border-[#3dd4d9]'}`}
             onClick={() => {
                 setMusicData({
                     imgSrc: file.thumbnailFile ? URL.createObjectURL(file.thumbnailFile) : '/music_img.jpg',
                     audioSrc: URL.createObjectURL(file.audioFile),
                     title: file.songTitle,
                     fileName: file.audioFile.name,
+                    _id: _id
                 });
             }}
         >
@@ -41,7 +41,7 @@ function GridCard(props: ListCardProps) {
 }
 
 
-const Grid: React.FC<GridProps> = ({ fileArr, setMusicData }) => {
+const Grid: React.FC<GridProps> = ({ fileArr, setMusicData, musicData }) => {
     return (
         <div className="p-4">
             {fileArr.length === 0 ? (
@@ -49,7 +49,7 @@ const Grid: React.FC<GridProps> = ({ fileArr, setMusicData }) => {
             ) : (
                 <div className="grid grid-cols-2 gap-2 md:grid-cols-4 lg:grid-cols-6">
                     {fileArr.map((file, index) => (
-                        <GridCard file={file} key={index} setMusicData={setMusicData} />
+                        <GridCard file={file} key={index} setMusicData={setMusicData} _id={index} isActive={musicData._id === index} />
                     ))}
                 </div>
             )}

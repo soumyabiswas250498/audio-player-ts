@@ -4,7 +4,7 @@ import { ListProps, ListCardProps } from '../Types';
 
 
 function ListCard(props: ListCardProps) {
-    const { file, setMusicData } = props;
+    const { file, setMusicData, _id, isActive } = props;
 
     const imgUrl = useMemo(() => {
         return file.thumbnailFile ? URL.createObjectURL(file.thumbnailFile) : '/music_img.jpg'
@@ -12,13 +12,14 @@ function ListCard(props: ListCardProps) {
 
     return (
         <li
-            className="flex items-center w-full p-1 transition duration-200 border border-gray-600 rounded-lg cursor-pointer bg-gray-800/10 hover:bg-gray-800"
+            className={`flex items-center w-full p-1 transition duration-200 border border-gray-600 rounded-lg cursor-pointer bg-gray-800/10 hover:bg-gray-800 ${isActive && 'border-[#3dd4d9]'}`}
             onClick={() => {
                 setMusicData({
                     imgSrc: file.thumbnailFile ? URL.createObjectURL(file.thumbnailFile) : '/music_img.jpg',
                     audioSrc: URL.createObjectURL(file.audioFile),
                     title: file.songTitle,
                     fileName: file.audioFile.name,
+                    _id: _id
                 });
             }}
         >
@@ -43,7 +44,7 @@ function ListCard(props: ListCardProps) {
 
 
 
-const List: React.FC<ListProps> = ({ fileArr, setMusicData }) => {
+const List: React.FC<ListProps> = ({ fileArr, setMusicData, musicData }) => {
 
 
     return (
@@ -53,7 +54,7 @@ const List: React.FC<ListProps> = ({ fileArr, setMusicData }) => {
             ) : (
                 <ul className="w-full space-y-1">
                     {fileArr.map((file, index) => (
-                        <ListCard key={index} setMusicData={setMusicData} file={file} />
+                        <ListCard key={index} setMusicData={setMusicData} file={file} _id={index} isActive={musicData._id === index} />
                     ))}
                 </ul>
             )}
