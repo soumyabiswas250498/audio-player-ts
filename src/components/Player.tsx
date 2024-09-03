@@ -12,6 +12,9 @@ const Player: React.FC<PlayerProps> = ({ musicData }) => {
     const [isPlaying, setIsPlaying] = useState<boolean>(false);
 
     useEffect(() => {
+
+        // Handle audio file change
+
         const handleLoadedMetadata = () => {
             if (audioRef.current) {
                 setDuration(audioRef.current.duration);
@@ -27,7 +30,12 @@ const Player: React.FC<PlayerProps> = ({ musicData }) => {
         };
     }, [musicData.audioSrc]);
 
+
+
     useEffect(() => {
+
+        //Detect Current Time
+
         let intervalId: NodeJS.Timeout;
 
         if (isPlaying) {
@@ -46,6 +54,9 @@ const Player: React.FC<PlayerProps> = ({ musicData }) => {
     }, [isPlaying]);
 
     useEffect(() => {
+
+        //Handle Play/Pause Control
+
         if (audioRef.current) {
             if (isPlaying) {
                 audioRef.current.play();
@@ -57,6 +68,9 @@ const Player: React.FC<PlayerProps> = ({ musicData }) => {
 
 
     useEffect(() => {
+
+        //Handle Song Change
+
         if (audioRef.current) {
             if (isPlaying) {
                 audioRef.current.pause();
@@ -71,6 +85,9 @@ const Player: React.FC<PlayerProps> = ({ musicData }) => {
     }, [musicData.audioSrc]);
 
     useEffect(() => {
+
+        // Handle song completion
+
         if (Math.floor(currentTime) === Math.floor(duration)) {
             setIsPlaying(false)
         }
