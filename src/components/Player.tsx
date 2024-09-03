@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { FaPlay, FaPause, FaForward, FaBackward } from "react-icons/fa";
 import Image from 'next/image';
 import { PlayerProps } from '../Types';
+import { formatTime } from '../Utils/formatTime';
 
 
 const Player: React.FC<PlayerProps> = ({ musicData }) => {
@@ -99,7 +100,7 @@ const Player: React.FC<PlayerProps> = ({ musicData }) => {
     return (
         <div className='flex flex-col items-center justify-center w-full pt-2 lg:flex-row'>
 
-            <div className='flex w-full gap-4 px-2 lg:w-1/2'>
+            <div className='flex w-full gap-4 px-2 lg:w-5/12 '>
                 <div className='w-32 h-20 overflow-hidden rounded-md lg:w-48'>
                     <Image
                         src={musicData.imgSrc}
@@ -107,7 +108,6 @@ const Player: React.FC<PlayerProps> = ({ musicData }) => {
                         width={100}
                         height={100}
                         className='object-contain w-full h-full rounded-md'
-                        priority  // Add this line
                     />
                 </div>
 
@@ -126,9 +126,11 @@ const Player: React.FC<PlayerProps> = ({ musicData }) => {
                 <source src={musicData.audioSrc} type="audio/mpeg" />
             </audio>
 
-            <div className="w-full">
-                <div className="flex justify-center w-full">
-                    <div className="w-[300px] lg:w-[400px]">
+            <div className="w-full lg:w-7/12 ">
+                <div className="flex justify-center items-center gap-2 w-full">
+                    <p className='text-sm lg:text-base'>{0}</p>
+
+                    <div className="w-[240px] lg:w-[400px]">
                         <input
                             type="range"
                             value={currentTime}
@@ -138,6 +140,8 @@ const Player: React.FC<PlayerProps> = ({ musicData }) => {
                             max={duration}
                         />
                     </div>
+                    <p className='text-sm lg:text-base'>{formatTime(Math.floor(currentTime))} / {formatTime(Math.floor(duration))}</p>
+
                 </div>
 
                 <div className="flex items-center justify-center w-full">
