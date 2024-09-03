@@ -67,11 +67,14 @@ const Player: React.FC<PlayerProps> = ({ musicData }) => {
             } else {
                 audioRef.current.load();
             }
-
-
-
         }
     }, [musicData.audioSrc]);
+
+    useEffect(() => {
+        if (Math.floor(currentTime) === Math.floor(duration)) {
+            setIsPlaying(false)
+        }
+    }, [currentTime, duration])
 
     const handleTimeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const newTime = parseFloat(e.target.value);
